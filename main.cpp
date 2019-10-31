@@ -4,7 +4,8 @@
 #include <string>
 
 const int POPULATION_LIMIT = 200;
-const float MUTATION_RATE = 0.03;
+const float MUTATION_RATE = 0.05;
+const std::string TARGET_PHRASE = "pomodoro";
 
 float bestFitness;
 DNA bestPhrase;
@@ -15,13 +16,12 @@ void displayGenerationResults();
 int main() {
     std::vector<DNA> population;
     std::vector<DNA> mating_pool;
-    std::string target = "pomodoro";
 
-    std::cout<<"target is: "<<target<<std::endl<<std::endl;
+    std::cout<<"target is: "<<TARGET_PHRASE<<std::endl<<std::endl;
 
     // Fill population list
     for (int i=0; i < POPULATION_LIMIT; i++) {
-        DNA testDNA = DNA(target.length(), target);
+        DNA testDNA = DNA(TARGET_PHRASE.length(), TARGET_PHRASE);
         population.push_back(testDNA);
     }
 
@@ -57,7 +57,7 @@ REGEN:
     std::cout<<"best phrase is: "<<bestPhrase.getGenes()<<std::endl;
 
     // Check for end condition
-    if (bestPhrase.getGenes().compare(target) == 0) {
+    if (bestPhrase.getGenes().compare(TARGET_PHRASE) == 0) {
         std::cout<<"found target"<<std::endl;
         displayGenerationResults();
         return 0;
