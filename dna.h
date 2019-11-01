@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "randomgen.h"
-#include <string>
+#include "config.h"
 #include <vector>
 
 class DNA {
@@ -13,8 +13,7 @@ class DNA {
 		std::string target;
 	public:	
 		DNA();
-		DNA(std::string target);
-		DNA(int genesLength, std::string target);
+		DNA(int genesLength);
 
 		static DNA crossover(DNA parent1, DNA parent2);
 

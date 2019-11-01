@@ -1,23 +1,20 @@
 #include "dna.h"
 
+Config config;
 
-DNA::DNA() {}
+DNA::DNA() {
+	this->target = config.TARGET_PHRASE;
+}
 
-DNA::DNA(int genesLength, std::string target) {
-	// set target
-	this->target = target;
+DNA::DNA(int genesLength) {
+	this->target = config.TARGET_PHRASE;
 	for(int i = 0; i < genesLength; i++) {
 		this->genes += (char) genRandom(32, 128);
 	}
 }
 
-DNA::DNA(std::string target) {
-	this->target = target;
-}
-
-
 DNA DNA::crossover(DNA parent1, DNA parent2) {
-	DNA child = DNA(parent1.target);
+	DNA child;
 
 	int midpt = int(genRandom(0, parent1.genes.length()));
 
@@ -48,11 +45,11 @@ void DNA::fitness() {
 	int score = 0;
 
 	for (int i=0; i< this->genes.length(); i++) {
-		if (genes[i] == this->target[i]) {
+		if (this->genes[i] == this->target[i]) {
 			score++;
 		}
 	}
 
-	this->fitness_value = float(score)/this->target.length();
+	this->fitness_value = float(score)/(this->target.length());
 	std::cout<<"Fitness value for "<< this->genes<<": "<<this->fitness_value<<std::endl;
 }

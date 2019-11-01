@@ -1,11 +1,7 @@
 #include <iostream>
 #include "dna.h"
 #include <vector>
-#include <string>
-
-const int POPULATION_LIMIT = 200;
-const float MUTATION_RATE = 0.05;
-const std::string TARGET_PHRASE = "pomodoro";
+#include "config.h"
 
 float bestFitness;
 DNA bestPhrase;
@@ -14,14 +10,16 @@ int generation = 0;
 void displayGenerationResults();
 
 int main() {
+
+    Config config;
     std::vector<DNA> population;
     std::vector<DNA> mating_pool;
 
-    std::cout<<"target is: "<<TARGET_PHRASE<<std::endl<<std::endl;
+    std::cout<<"target is: "<<config.TARGET_PHRASE<<std::endl<<std::endl;
 
     // Fill population list
-    for (int i=0; i < POPULATION_LIMIT; i++) {
-        DNA testDNA = DNA(TARGET_PHRASE.length(), TARGET_PHRASE);
+    for (int i=0; i < config.POPULATION_LIMIT; i++) {
+        DNA testDNA = DNA(config.TARGET_PHRASE.length());
         population.push_back(testDNA);
     }
 
@@ -41,7 +39,6 @@ REGEN:
     // Fill mating pool
     for (int i=0; i < population.size(); i++) {
         int n = int(population[i].getFitness() * 100);
-        std::cout<<"genes "<<population[i].getGenes()<<" have a fitness of "<<population[i].getFitness()<<std::endl;
 
         if (population[i].getFitness() > bestFitness) {
             bestFitness = population[i].getFitness();
@@ -57,7 +54,7 @@ REGEN:
     std::cout<<"best phrase is: "<<bestPhrase.getGenes()<<std::endl;
 
     // Check for end condition
-    if (bestPhrase.getGenes().compare(TARGET_PHRASE) == 0) {
+    if (bestPhrase.getGenes().compare(config.TARGET_PHRASE) == 0) {
         std::cout<<"found target"<<std::endl;
         displayGenerationResults();
         return 0;
@@ -68,14 +65,13 @@ REGEN:
 
     for (int i=0; i < population.size(); i++) {
         int a = genRandom(0, mating_pool.size());
-        std::cout<<a<<std::endl;
         int b = genRandom(0, mating_pool.size());
 
         DNA parentA = mating_pool[a];
         DNA parentB = mating_pool[b];
 
         DNA child = DNA::crossover(parentA, parentB);
-        child.mutate(MUTATION_RATE);
+        child.mutate(config.MUTATION_RATE);
 
         population[i] = child;
     }
